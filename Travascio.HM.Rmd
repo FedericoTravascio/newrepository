@@ -1,0 +1,1059 @@
+---
+title: "HW1"
+author: "Federico Travascio"
+date: "2024-12-02"
+output: html_document
+editor_options: 
+  markdown: 
+    wrap: 72
+---
+
+**COLLABORATIONS**
+
+I used artificial intelligence as support for the R-codes. In addition,
+during the course of the homework I worked with Flavia Scarfò, Ramona
+Fantone, Marco Cavallo and Fabio Tripodi.
+
+**EXERCISE 1**
+
+**A.** The first-order autoregressive process (AR(1)) is defined by the
+relationship:
+
+$$
+X_t = \theta X_{t-1} + \epsilon_t
+$$
+
+The AR(1) model can exhibit either stationary or non-stationary
+behavior. For the process to be stationary, the following condition must
+be met: $|\theta| < 1$.
+
+A process is weakly stationary (or covariance stationary) if it
+satisfies three key conditions:
+
+1.  The mean $E[X_t]$ is constant over time. That is, $E[X_t] = \mu$ for
+    all $t$.
+
+2.  The variance $\text{Var}(X_t)$ is constant over time. In other
+    words, $\text{Var}(X_t) = \sigma_X^2$ for all $t$.
+
+3.  The autocovariance $\text{Cov}(X_t, X_{t+h})$ depends only on the
+    lag $h$, not on the time $t$. Specifically, the autocovariance
+    function is $\gamma(h) = \text{Cov}(X_t, X_{t+h})$, which depends
+    only on the lag $h$.
+
+We will now demonstrate how these conditions apply to our AR(1) process.
+
+**The mean of** $X_t$ is given by:
+
+$$
+E[X_t] = E[\theta X_{t-1} + \epsilon_t]
+$$
+
+This step uses the definition of the process $X_t$, which is defined as
+$\theta$ times the previous value of the process $X_{t-1}$, plus a
+random error term $\epsilon_t$. The expected value (or mean) of $X_t$ is
+thus equal to the expected value of this expression.
+
+Using the Law of Total Expectation, we get:
+
+$$
+E[X_t] = \theta E[X_{t-1}] + E[\epsilon_t]
+$$
+
+Here we use the law of total expectation, which states that the expected
+value of a sum of random variables is equal to the sum of their expected
+values. Also, since $\theta$ is a constant, it can be pulled out of the
+expectation operator.
+
+$$
+E[X_t] = \theta E[X_{t-1}]
+$$
+
+Now, we consider the fact that $\epsilon_t$ is white Gaussian noise with
+zero mean ($E[\epsilon_t] = 0$). Therefore, the term $E[\epsilon_t]$
+vanishes from the equation.
+
+We assume that the process is stationary, meaning its mean is constant
+over time ($E[X_t] = E[X_{t-1}] = \mu$). Substituting $\mu$ for $E[X_t]$
+and $E[X_{t-1}]$, we obtain this equation:
+
+$$
+\mu = \theta \mu
+$$
+
+Therefore, the mean of the process is constant and equal to 0. If $\mu$
+were different from zero, then $\theta \mu$ would differ from $\mu$, and
+the equation would not hold. Therefore, the mean of the process is
+constant and equal to 0. So, the derivation shows that if a process is
+defined as a multiple of its previous value plus a white Gaussian noise
+term with zero mean, and the process is stationary, then the mean of the
+process must be zero.
+
+**The variance of** $X_t$ is:
+
+$$
+Var(X_t) = E[X_t^2] - (E[X_t])^2
+$$
+
+This is the starting point of the calculation. The variance of a random
+variable is defined as the difference between the expected value of the
+square of the variable and the square of its expected value.
+
+Since $E[X_t] = 0$, this simplifies to:
+
+$$
+Var(X_t) = E[X_t^2]
+$$
+
+We substitute $X_t$ with its definition, which is
+$\theta X_{t-1} + \epsilon_t$, to expand the square and simplify the
+expression.
+
+$$
+E[X_t^2] = E[(\theta X_{t-1} + \epsilon_t)^2]
+$$
+
+We expand the square of the expression
+$(\theta X_{t-1} + \epsilon_t)^2$, obtaining the three terms on the
+right-hand side of the equation.
+
+$$
+E[X_t^2] = \theta^2 E[X_{t-1}^2] + 2\theta E[X_{t-1} \epsilon_t] + E[\epsilon_t^2]
+$$
+
+Since $\epsilon_t$ and $X_{t-1}$ are independent, and
+$E[\epsilon_t] = 0$, the term $2\theta E[X_{t-1} \epsilon_t]$ simplifies
+to 0.
+
+$$
+E[X_t^2] = \theta^2 E[X_{t-1}^2] + E[\epsilon_t^2]
+$$
+
+Remembering that $\epsilon_t = Z + \sigma W_t$ , using the Law of Total
+Variance.
+
+$$
+Var(\epsilon_t) = Var(Z) + \sigma^2
+$$
+
+We calculate the variance of $Z$, which is a random variable uniformly
+distributed between -5 and 5. The formula for the variance of a uniform
+distribution is $\frac{(b - a)^2}{12}$, where $a$ and $b$ are the lower
+and upper limits of the interval.
+
+$$
+Var(Z) = \frac{(5 - (-5))^2}{12} = \frac{100}{12} = \frac{25}{3}
+$$
+
+We substitute the variance of $Z$ calculated in the previous step into
+the total variance formula for $\epsilon_t$.
+
+$$
+Var(\epsilon_t) = \frac{25}{3} + \sigma^2
+$$
+
+Assuming the stationarity of the process, i.e.,
+$\text{Var}(X_t) = \text{Var}(X_{t-1}) = \sigma_X^2$, we can substitute
+$E[X_t^2]$ and $E[X_{t-1}^2]$ with $\sigma_X^2$ in the equation from
+Step 5. Then, we substitute $\text{Var}(\epsilon_t)$ with the result
+obtained in Step 8 and solve for $\sigma_X^2$. This provides us with the
+formula for the variance of the process $X_t$, which is constant over
+time. The condition $|\theta| < 1$ is necessary for the convergence of
+the geometric series that forms during the solution for $\sigma_X^2$.
+
+$$
+\sigma_X^2 = \theta^2 \sigma_X^2 + \frac{25}{3} + \sigma^2=
+$$
+
+$$
+ \frac{25}{3} + \frac{\sigma^2}{1 - \theta^2}, \, |\theta| < 1
+$$
+
+Assuming the stationarity of the process, i.e.,
+$\text{Var}(X_t) = \text{Var}(X_{t-1}) = \sigma_X^2$, we can substitute
+$E[X_t^2]$ and $E[X_{t-1}^2]$ with $\sigma_X^2$ in the equation from
+Step 5. Then, we substitute $\text{Var}(\epsilon_t)$ with the result
+obtained in Step 8 and solve for $\sigma_X^2$. This provides us with the
+formula for the variance of the process $X_t$, which is constant over
+time. The condition $|\theta| < 1$ is necessary for the convergence of
+the geometric series that forms during the solution for $\sigma_X^2$.
+
+**The autocovariance** is:
+
+$\text{Cov}(X_t, X_{t+h}) = \text{Cov}(X_t, \theta^h X_t + \sum_{i=0}^{h-1} \theta^i \epsilon_{t+h-i})$
+
+This is the starting point of the calculation. The covariance between
+two random variables measures their tendency to vary together. In this
+case, we are trying to calculate the covariance between the process at
+time $t$ ($X_t$) and the process at time $t+h$ ($X_{t+h}$). We use the
+definition of $X_{t+h}$ provided in the source to expand the expression.
+
+$\text{Cov}(X_t, X_{t+h}) = \text{Cov}(X_t, \theta^h X_t)$
+
+This step takes advantage of the fact that $X_t$ and $\epsilon_{t+h-i}$
+are independent for each $i$. The covariance between two independent
+variables is always zero. Therefore, all the terms in the summation that
+involve $\epsilon_{t+h-i}$ cancel out, leaving only the covariance
+between $X_t$ and $\theta^h X_t$.
+
+$\text{Cov}(X_t, X_{t+h}) = \theta^h \text{Cov}(X_t, X_t)$
+
+Now, we apply the property of covariance that states that covariance is
+a bilinear operator. This means we can factor out the constant
+$\theta^h$ from the covariance.
+
+$\text{Cov}(X_t, X_{t+h}) = \theta^h \text{Var}(X_t)$
+
+The covariance of a random variable with itself is equal to its
+variance. Therefore, $\text{Cov}(X_t, X_t)$ is simply the variance of
+$X_t$, denoted as $\text{Var}(X_t)$.
+
+$\text{Cov}(X_t, X_{t+h}) = \theta^h \left( \sigma^2 \frac{1}{1 - \theta^2} + \frac{1}{(1-\theta)^2} \cdot \frac{100}{12} \right)$
+
+We substitute $\text{Var}(X_t)$ with its formula, which was previously
+derived as
+$\sigma^2 \frac{1}{1 - \theta^2} + \frac{1}{(1-\theta)^2} \cdot \frac{100}{12}$.
+This gives us the final expression for the covariance between $X_t$ and
+$X_{t+h}$.
+
+Since $|\theta| < 1$ (the stationarity condition),
+$\text{Cov}(X_t, X_{t+h})$ is finite and tends to 0 as $h \to \infty$,
+because $\theta^h \to 0$ when $|\theta| < 1$.
+
+This step analyzes the behavior of the covariance as the time distance
+between the two points of the process ($h$) increases. The stationarity
+condition, $|\theta| < 1$, implies that $\theta^h$ approaches zero as
+$h$ tends to infinity. Therefore, the covariance between $X_t$ and
+$X_{t+h}$ decreases to zero as the time distance increases.
+
+The derivation demonstrates that the covariance between two points of
+the process $X_t$ separated by a time interval $h$ is finite and
+decreases to zero as $h$ tends to infinity. This result confirms the
+weak stationarity of the process, meaning that its mean and variance are
+constant over time, and its autocovariance depends only on the time
+distance between the two points considered.
+
+**B. Ergodicity:**
+
+This is the definition of the autocorrelation function (ACF). The ACF
+measures the linear correlation between two points of the stochastic
+process separated by a time interval $( h )$. It is defined as the ratio
+between the covariance of $( X_t )$ and $( X_{t+h} )$, and the variance
+of $( X_t )$.
+
+$( \rho_h = \frac{\text{Cov}(X_t, X_{t+h})}{\text{Var}(X_t)} )$
+
+In this step, we substitute the numerator with the result obtained
+earlier for $\text{Cov}(X_t, X_{t+h})$, which is
+$\theta^h \text{Var}(X_t)$.
+
+$\rho_h = \frac{\theta^h \text{Var}(X_t)}{\text{Var}(X_t)}$
+
+Simplifying the fraction, we obtain the final expression for the
+autocorrelation function: $\rho_h = \theta^h$. This expression shows
+that the autocorrelation depends only on $\theta$ and the time interval
+$h$.
+
+$\rho_h = \theta^h$
+
+Since $|\theta| < 1$, $\rho_h$ decays exponentially to 0 as $h$
+increases.
+
+The derivation shows that the autocorrelation function of the process is
+$\rho_h = \theta^h$, and it decays exponentially to zero as $h$
+increases. This behavior indicates that the process has "short memory,"
+meaning that the influence of the past on the present quickly diminishes
+as the time distance increases.
+
+The conclusion asserts that the process is not ergodic because the
+autocorrelation function depends on $Z$, which varies between different
+realizations of the process. This conclusion is based on the assumption
+that $Z$ is different for each realization of the process.
+
+**C.**
+
+```{r}
+set.seed(23072001)
+
+# Parameters
+sigma2 <- 1  # Variance of the white noise
+theta <- 0.9 # Autoregressive coefficient
+T <- 100     # Length of the time series
+
+# Generate Z from Uniform[-5, 5]
+Z <- runif(1, min = -5, max = 5)
+
+# Generate the white noise as Gaussian noise with mean Z and variance sigma2
+epsilon_t <- rnorm(T, mean = Z, sd = sqrt(sigma2))
+
+# Initialize the time series X_t
+X_t <- numeric(T)  # Empty vector to store the time series
+X_t[1] <- epsilon_t[1]
+
+# Simulate the AR(1) process
+for (t in 2:T) {
+  X_t[t] <- theta * X_t[t - 1] + epsilon_t[t]
+}
+
+# Convert X_t to a time series object
+X_t_ts <- ts(X_t)
+
+# Plot the time series
+plot(X_t_ts, main = "Simulated AR(1) Process", ylab = "Xt", xlab = "Time", col = "purple")
+```
+
+The plot above shows the evolution of a simulated AR(1) process over
+time. Below are some key observations regarding its stationarity:
+
+-   The series exhibits fluctuations that appear to stabilize around a
+    certain level over time, suggesting that it may oscillate around a
+    steady-state mean.
+-   In the early portion of the series, there is a noticeable upward
+    trend, followed by fluctuations with smaller amplitude in the later
+    periods.
+-   Despite these short-term trends, there are no strong signs of
+    explosive behavior, which would be expected if the process were not
+    stationary. However, with only 100 observations, the series does not
+    exhibit perfect stationarity to the naked eye.
+
+And also:
+
+-   The theoretical condition for stationarity in an AR(1) process is
+    that $|\theta| < 1$.
+-   Assuming this series was generated with $\theta = 0.9$, it satisfies
+    the condition $|\theta| < 1$, ensuring theoretical stationarity.
+-   However, due to the relatively short time series, the properties of
+    stationarity may not yet be fully apparent, as the process needs
+    more time to "settle" around its long-term mean.
+
+So, in conclusion:
+
+-   Visually, the series does not appear entirely stationary due to the
+    sample size and observed trends.
+-   Increasing the number of observations would likely reveal clearer
+    stationarity, with the process oscillating more evidently around the
+    theoretical mean and variance stabilizing.
+
+```{r}
+# Compute the empirical mean
+empirical_mean <- mean(X_t)
+cat("Empirical Mean:", round(empirical_mean,2) , "\n")
+```
+
+```{r}
+# Compute the empirical variance
+empirical_variance <- var(X_t)
+cat("Empirical Variance:", round(empirical_variance,2) , "\n")
+```
+
+The results, with a mean of $35.96$ and a variance of $50.23$, deviate
+significantly from the theoretical values. The theoretical mean of the
+process is $0$, but the empirical value can deviate due to the influence
+of the specific random value $Z$ used in the realization of the process.
+This could explain the significant difference between my mean ($35.96$)
+and the theoretical mean ($0$).
+
+Knowing that, the variance $\text{Var}(X_t)$ is given by:\
+$$
+\text{Var}(X_t) = \frac{\sigma^2}{1 - \theta^2} + \frac{1}{(1 - \theta)^2} \cdot \frac{100}{12},
+$$ where $\sigma^2 = 1$ and $\theta = 0.9$.
+
+Substituting these values, we obtain:\
+$$
+\text{Var}(X_t) = \frac{1}{1 - 0.9^2} + \frac{1}{(1 - 0.9)^2} \cdot \frac{100}{12}.
+$$
+
+The theoretical variance can be computed explicitly as:\
+$$
+\text{Var}(X_t) \approx 838.6,
+$$which is significantly larger than the empirical variance $50.23$.
+This discrepancy suggests that the simulation generated a series with
+less dispersion than predicted by theory.
+
+```{r}
+# Number of simulations
+num_simulations <- 5  
+
+# Matrix to store multiple time series
+time_series_matrix <- matrix(0, nrow = T, ncol = num_simulations)
+
+# Simulate the process for different Z values
+for (sim in 1:num_simulations) {
+  Z <- runif(1, min = -5, max = 5)  # Draw a new Z for each simulation
+  epsilon_t <- rnorm(T, mean = Z, sd = sqrt(sigma2))  # Generate epsilon_t
+  X_t <- numeric(T)  # Initialize the time series
+  X_t[1] <- epsilon_t[1]
+  
+  # Generate the AR(1) process
+  for (t in 2:T) {
+    X_t[t] <- theta * X_t[t - 1] + epsilon_t[t]
+  }
+  
+  # Store the result in the matrix
+  time_series_matrix[, sim] <- X_t
+}
+
+# Plot all time series on a single plot
+matplot(time_series_matrix, type = "l", lty = 1, col = rainbow(num_simulations),
+        xlab = "Time", ylab = "Xt", main = "AR(1) Processes with Different Z Values")
+```
+
+The results of the plot show that the AR(1) process converges to unique
+equilibrium states that depend on the observed value of $Z$. Each
+realization of the process, characterized by a different value of $Z$
+drawn from the uniform distribution $U[-5,5]$, converges to a distinct
+horizontal band in the graph. This behavior is due to the fact that $Z$
+determines the mean of the error term $\epsilon_t$, influencing the
+equilibrium level of each realization.
+
+However, the dependence on $Z$ implies that the AR(1) process is not
+ergodic. Ergodicity requires that the process's statistics, such as the
+mean and variance, can be reliably estimated from a single sufficiently
+long realization. In the case of the AR(1) process under consideration,
+the different values of $Z$ lead to distinct equilibrium states, making
+it impossible to obtain accurate estimates of the process's statistics
+from a single realization.
+
+```{r}
+acf(X_t, lag.max = 50, main = "Autocorrelation Function (ACF)")
+```
+
+The graphs show that the process converges to distinct equilibrium
+states determined by the value of the random parameter $Z$. Each
+realization of the process, characterized by a different value of $Z$,
+stabilizes around a specific mean level. This behavior is expected in a
+stationary AR(1) process, where past values influence the present, but
+the effect gradually diminishes over time.
+
+The observed empirical mean ($35.96$) deviates significantly from the
+theoretical mean ($0$). This discrepancy can be attributed to the
+influence of the specific random value $Z$ used in the realization of
+the process.
+
+The theoretical variance is approximately $838.6$, which is considerably
+higher than the empirical variance obtained from the simulation. This
+difference may be due to the limited sample size ($T = 100$) or the
+specific sequence of random numbers used in the simulation.
+
+A larger sample size would tend to reduce variability in the estimates
+and produce results closer to the theoretical values.
+
+The autocorrelation function (ACF) of the AR(1) process decays
+exponentially at a rate determined by the parameter $\theta$. A value of
+$\theta$ close to $1$ indicates longer memory, while a value of $\theta$
+close to $0$ indicates shorter memory. The shape of the ACF provides
+information on the persistence of fluctuations in the process.
+
+The sample autocorrelation coefficient $\hat{\rho}_h$ is an estimator of
+the theoretical autocorrelation $\rho_h$ for lag $h$. It is computed as:
+$$
+\hat{\rho}h = \frac{\sum{t=1}^{T-h} (X_t - \bar{X})(X_{t+h} - \bar{X})}{\sum_{t=1}^T (X_t - \bar{X})^2},
+$$ where $\bar{X}$ is the sample mean of the time series and $T$ is the
+length of the series.
+
+*Observations*
+
+-   *Accuracy of* $\hat{\rho}_h$:
+    -   For smaller lags ($h$), the estimator $\hat{\rho}_h$ closely
+        approximates the theoretical autocorrelation
+        $\rho_h = \theta^h$. This can be observed in the ACF plot, where
+        the sample autocorrelation follows the expected exponential
+        decay pattern.
+    -   As $h$ increases, $\hat{\rho}h$ becomes less reliable due to the
+        reduced number of overlapping data points $(X_t, X{t+h})$ and
+        the increased influence of noise.
+-   *Convergence and Variability*:
+    -   The variability of $\hat{\rho}_h$ increases with $h$, as seen
+        from the confidence intervals in the ACF plot. This is expected
+        since the number of observations contributing to $\hat{\rho}_h$
+        decreases with larger $h$, making the estimates noisier.
+-   *Relation to* $Z$:
+    -   In the specific context of this AR(1) process, the dependence of
+        the equilibrium state on the random variable $Z$ introduces
+        additional variability into $\hat{\rho}_h$ across different
+        realizations of the process. This highlights the non-ergodic
+        nature of the process, as the autocorrelation estimates may
+        differ between realizations depending on the value of $Z$.
+
+The estimator $\hat{\rho}_h$ is a consistent and unbiased estimator for
+$\rho_h$ for stationary processes when $T \to \infty$. In this case, it
+effectively captures the exponential decay of autocorrelation for the
+AR(1) process with $\theta = 0.9$. However, for finite sample sizes and
+larger lags, the estimates become less precise due to limited data and
+noise.
+
+**EXERCISE 2**
+
+```{r}
+S <- c(
+
+1, 0, 2, 2, 1, 1, 1, 1, 0, 0, 2, 2, 0, 1, 0, 1, 1, 2, 1, 2, 11, 1, 1, 2, 1, 0, 1, 1, 0, 1, 1, 0, 2, 0, 2, 1, 1, 0, 2, 1, 1, 1, 0, 0, 2, 1, 0, 2, 0, 1, 2, 0, 1, 0, 1, 1, 2, 1, 0, 2, 1, 2, 2, 0, 1, 1, 2, 1, 0, 0, 0, 2, 0, 1, 1, 1, 2, 1, 2, 0, 1, 2, 2, 2, 1, 1, 1, 0, 2, 0, 2, 0, 2, 1, 2, 1, 2, 1, 1, 1)
+```
+
+**A.** Since tossing two independent coins results in three possible
+outcomes, it is logical to define $St$ as the sum of the outcomes from
+each coin toss:
+
+-   $St=2$ if both coins show heads (HH)
+
+-   $St=1$ if one coin shows heads and the other tails (HT or TH)
+
+-   $St=0$ if both coins show tails (TT).
+
+These outcomes form a sequence of independent and identically
+distributed random variables following a Binomial distribution
+$St ​∼ Binomial (n=2, p=0.5)$. we define $Xt$​ as a linear combination of
+the past two values $S_{t−1}$ and $S_{t−2}$​, along with the current
+value $St$​:
+
+$$
+X_t = \alpha_1 S_{t-1} + \alpha_2 S_{t-2} + S_t
+$$
+
+Thus, the process is classified as an $MA(2)$ because it incorporates
+the current shock $St$​, as well as the two most recent shocks $S_{t−1}$,
+$S_{t−2}$, the coefficients α*1 and α*2​ acting as the respective
+weights.
+
+The previous process definition derives from the general MA(2) process:
+$$
+X_t = \theta_0 + \theta_1 \epsilon_{t-1} + \theta_2 \epsilon_{t-2} + \cdots + \theta_q \epsilon_{t-q} + \epsilon_t = 
+$$$$ X_t = \theta_0 + \sum_{j=1}^{q} \theta_j \epsilon_{t-j} + \epsilon_t
+$$
+
+where:
+
+-   $θ_0$ ​: Constant term representing the mean of the process.
+
+-   $θ_j$​: Coefficients that determine the influence of past shocks
+    $ϵt−j​$ on $Xt$​.
+
+-   $ϵt−j$: Past random shocks occurring at time $t−j$, assumed to be
+    independent with zero mean and constant variance.
+
+-   $ϵt$​: The current random shock (white noise) at time $t$.
+
+Since there are 3 possible outcomes for each toss, the distribution that
+describes the White Noise is a discrete distribution.
+
+**B.** Now, let us calculate that the mean and variance are constant
+over time and that the autocorrelation depends on the lag $h$ and not on
+the lag $t$. This is a sufficient assumption to define the stationarity
+of the process $Xt$:
+
+-   **MEAN**
+
+To compute the expected value of $Xt$, we apply the linearity of
+expectation:
+
+$E[X_t] = E[\alpha_1 S_{t-1} + \alpha_2 S_{t-2} + S_t]$
+
+Using the linearity property of expectation:
+
+$$E[X_t] = \alpha_1 E[S_{t-1}] + \alpha_2 E[S_{t-2}] + E[S_t]$$
+
+Considering that:
+
+$E[S_t] = n \cdot p = 2 \cdot 0.5 = 1$
+
+for each $t$, since each coin toss has an equal chance of being heads or
+tails, $St$​ follows a Binomial distribution with parameters $n=2$ and
+$p=0.5$ we get:
+
+$E[X_t] = \alpha_1 \cdot 1 + \alpha_2 \cdot 1 + 1$
+
+Which can be simplified in this way:
+
+$E[X_t] = \alpha_1 + \alpha_2 + 1$
+
+Therefore, as a condition of stationarity, $E[X_t]$ is constant over
+time, depending only on $$\alpha_1$$ and$$\alpha_2$$ and not on $t$.
+
+-   **VARIANCE**
+
+To demonstrate that the variance of $Xt$ is constant over time, we
+proceed through the following steps:
+
+1.  The process $Xt$ is given by:
+
+$Xt=α1St−1+α2St−2+StX_t$
+
+\
+We start by recalling the definition of $Xt$, which is a linear
+combination of the random variables $S_{t−1}$, $S_{t−2}$, and $St$. This
+setup suggests that the variance of $Xt$ will depend on the individual
+variances of these terms, scaled by their respective coefficients $α_1$,
+$α_2$, and 1.
+
+2.  To calculate the variance of $Xt$, we use the formula for the
+    variance of a linear combination of random variables. Specifically,
+    for any random variables $X$ and $Y$, and constants $a$ and $b$, the
+    variance of $aX+bY$ is given by:
+
+$Var(aX+bY)=a2Var(X)+b2Var(Y)\text{Var}(aX + bY)$
+
+Since $St$ is independent across time (because it is white noise), the
+variances of the components can be added. Therefore, the variance of
+$Xt$ is:
+
+$Var(X_t)=Var(α_1S_{t−1}+α_2S_{t−2}+St)\text{Var}(X_t)$
+
+Using the property of independence and the scaling effect of the
+coefficients:
+
+$Var(Xt)=α_1^2Var(S_{t−1})+α_2^2Var(S_{t−2})+Var(St)\text{Var}(X_t)$
+
+\
+Considering that $S_{t−1}$, $S_{t−2}$, and $St$ are independent (they
+represent separate coin tosses), we can add their individual variances.
+The coefficients $α1$ and $α2$ scale the variances of $S_{t−1}$ and
+$S_{t−2}$, respectively, while $St$ contributes its variance as is.
+
+3.  Given that St follows a Binomial distribution with parameters $n=2$
+    and $p=0.5$, we can calculate its variance as follow:
+
+$Var(St)=n⋅p⋅(1−p)=2⋅0.5⋅0.5=0.5\text{Var}(S_t)$
+
+Thus, for all values of t, the variance of $St$ is constant and equals
+0.5:
+
+$Var(S_{t−1})=Var(S_{t−2})=Var(St)=0.5$
+
+The variance of $St$ is constant because it is based on a Binomial
+distribution with fixed parameters. This is crucial for the next step
+because we can now substitute this constant variance into the variance
+formula for $Xt$, ensuring that the variance of $Xt$ is determined by
+the fixed coefficients $α1$ and $α2$, and the time-invariant variance of
+$St$.
+
+Substituting the value of $Var(St)=0.5$ into the formula for $Var(Xt)$
+we get:
+
+$Var(Xt)=α_{1/2}⋅0.5+α_{2/2}⋅0.5+0.5$
+
+$Var(Xt)=0.5(α_{1/2}+α_{2/2}+1)$
+
+At this point, we substitute the constant value of $Var(St)=0.5$ into
+our expression for $Var(Xt)$, simplifying the formula to show how the
+variance of $Xt$ depends on the fixed coefficients $α_1$ and $α_2$, as
+well as the constant variance of $St$.
+
+The variance of $Xt$ is constant over time because it depends only on
+the fixed values of $α_1$ and $α_2$, as well as the constant variance of
+$St$. Since the variance of $St$ is independent of time, the variance of
+$Xt$ does not change over time. Therefore, $Var(Xt)$ satisfies the
+condition for weak stationarity, which requires that the variance is
+time-invariant.
+
+\
+This final step concludes that the variance of $Xt$ is time-invariant,
+proving that the process satisfies the weak stationarity condition for
+variance. The key factor is that the variance depends only on fixed
+parameters and a time-invariant white noise process, which guarantees
+that $Xt$ has constant variance.
+
+-   **AUTOCORRELATION FUNCTION**
+
+To prove the stationarity of the process:
+
+**At lag h=1**, the covariance between $Xt$ and $X_{t−1}$ is given by:
+
+Considering that $X_t$ and $X_{t-1}$ share the term $S_{t-1}$, there is
+a correlation between them due to the influence of the white noise at
+time $t-1$. This correlation arises because the process $S_t$ is
+independent at different times, but within the same lag, overlapping
+terms contribute to the covariance.
+
+$Cov(X_t,X_{t−1})=Cov(α1S_{t−1}+α1α2S_{t−2})$
+
+Substituting $Var(St)=0.5$, we find:
+
+$Cov(Xt,X_{t−1})=α_1⋅Var(S_{t−1})+α_1α_2⋅Var(S_{t−2})$=
+
+=$α_1⋅0.5+α_1α_2⋅0.5$\
+
+**At lag h=2**, the covariance between $Xt$ and $X_{t−2}$ is given by:
+
+$Cov(Xt,X_{t−2})=Cov(α1S_{t−1}+α_2S_{t−2}+St,S_{t−2}+α_1S_{t−3}+α_2S_{t−4})$=
+
+=$Cov(α_2S_{t−2})$= $=α_2Var(S_{t−2})=α_2⋅0.5$
+
+At lag 2, the covariance involves only the term $α_2S_{t−2}$, since only
+$S_{t−2}$ is shared between $Xt$ and $X_{t−2}$. The other terms do not
+contribute due to independence. We again use the constant variance of
+$St$, which is 0.5, to calculate the covariance.
+
+**For h\>2**, the covariance is zero:
+
+$Cov(Xt,X_{t−h})=0$
+
+In this case, no terms overlap between $Xt$ and $Xt−h$ because the time
+indices are too far apart. Since $St$ is white noise and independent at
+different time points, the covariance for these higher lags is zero.
+Consequently, autocovariance will be zero.
+
+Finally we can find the **autocorrelation function** $ρ(h)$, we use the
+autocovariance $γ(h)=Cov(Xt,Xt−h)$, which we derived earlier. The ACF is
+defined as:
+
+$$
+\rho(h) = \frac{\gamma(h)}{\gamma(0)}
+$$
+
+where $\gamma(0)$ is the variance of $X_t$, and $\gamma(h)$ is the
+covariance between $X_t$ and $X_{t-h}$.
+
+The covariance at **lag h = 1** is:
+
+$$
+\gamma(1) = \text{Cov}(X_t, X_{t-1}) = \text{Cov}(\alpha_1 S_{t-1} + \alpha_2 S_{t-2} + S_t, \alpha_1 S_{t-2} + \alpha_2 S_{t-3} + S_{t-1})
+$$
+
+Only overlapping terms contribute due to the independence of $S_t$:
+
+$$
+\gamma(1) = \alpha_1 \cdot \text{Var}(S_{t-1}) + \alpha_1 \alpha_2 \cdot \text{Var}(S_{t-2})
+$$
+
+Since $\text{Var}(S_t) = 0.5$:
+
+$$
+\gamma(1) = \alpha_1 \cdot 0.5 + \alpha_1 \alpha_2 \cdot 0.5=
+$$
+
+$$ = 0.5 \alpha_1 (1 + \alpha_2)$$
+
+Thus, the autocorrelation at lag 1 becomes:
+
+$$
+\rho(1) = \frac{\gamma(1)}{\gamma(0)} = \frac{0.5 \alpha_1 (1 + \alpha_2)}{0.5 (1 + \alpha_1^2 + \alpha_2^2)}=
+$$
+
+$$
+= \frac{\alpha_1 (1 + \alpha_2)}{1 + \alpha_1^2 + \alpha_2^2}
+$$
+
+For lag **h = 2**, the covariance is:
+
+$$
+\gamma(2) = \text{Cov}(X_t, X_{t-2}) = \text{Cov}(\alpha_1 S_{t-1} + \alpha_2 S_{t-2} + S_t, S_{t-2} + \alpha_1 S_{t-3} + \alpha_2 S_{t-4})
+$$
+
+Only the term $S_{t-2}$ overlaps:
+
+$$
+\gamma(2) = \alpha_2 \cdot \text{Var}(S_{t-2}) = \alpha_2 \cdot 0.5
+$$
+
+Thus, the autocorrelation at lag 2 becomes:
+
+$$
+\rho(2) = \frac{\gamma(2)}{\gamma(0)} = \frac{0.5 \alpha_2}{0.5 (1 + \alpha_1^2 + \alpha_2^2)}=
+$$
+
+$$
+= \frac{\alpha_2}{1 + \alpha_1^2 + \alpha_2^2}
+$$
+
+In order to calculate lags greater than two, we take **lag = 3** as a
+reference$$
+\gamma(h) = \text{Cov}(X_t, X_{t-h}) = 0 \quad \text{for} \quad h > 2
+$$
+
+Thus, the autocorrelation is:
+
+$$
+\rho(h) = \frac{\gamma(h)}{\gamma(0)} = \frac{0}{\gamma(0)} = 0
+$$
+
+\
+Since $X_t$ and $X_{t-h}$ share no terms in common for $h > 2$.
+
+In the end, we demonstrated that the mean and the variance of $X_t$ are
+constant and the autocorrelation function $\rho(h)$ shows that the
+correlation between $X_t$ and $X_{t-h}$ depends only on the lag $h$,
+confirming that $X_t$ is **weakly stationary**.
+
+### 
+
+**C.** Since the process in question is an MA(2), we know that the
+theoretical PACF will be zero for $h > 2$. Therefore, we only need to
+calculate $\Phi_{11}$ and $\Phi_{22}$.
+
+-   $\Phi_{11}$ is simply the correlation between $X_t$ and $X_{t+1}$,
+    which is equal to $\rho_1$:
+
+For $h = 1$, the PACF is:
+
+$$
+\phi_{11} = \rho_1.
+$$
+
+But we already know the value of $\rho_1$:
+
+$$
+\rho_1 = \frac{0.5 \alpha_1 + 0.5 \alpha_1 \alpha_2}{0.5(1 + \alpha_1^2 + \alpha_2^2)}.
+$$
+
+So, canceling out 0.5, we will have:
+
+$$
+\phi_{11} = \frac{\alpha_1 (1 + \alpha_2)}{1 + \alpha_1^2 + \alpha_2^2}.
+$$
+
+#### PACF for $h = 2$
+
+The PACF for $h = 2$ is given by the ratio of determinants:
+
+$$
+\phi_{22} = \frac{\text{detNum}}{\text{detDen}},
+$$
+
+where:
+
+-   The numerator is the determinant of the matrix:
+
+$$
+\begin{vmatrix}
+1 & \rho_1 \\
+\rho_1 & \rho_2
+\end{vmatrix},
+$$
+
+-   The denominator is the determinant of the matrix:
+
+$$
+\begin{vmatrix}
+1 & \rho_1 \\
+\rho_1 & 1
+\end{vmatrix}.
+$$
+
+For the numerator:
+
+$$ \text{detNum} = \rho_2 - \rho_1^2. $$
+
+For the denominator, the determinant is:
+
+$$
+\text{detDen} = 1 - \rho_1^2.
+$$
+
+Substituting the determinants into the formula for $\phi_{22}$:
+
+$$
+\phi_{22} = \frac{\rho_2 - \rho_1^2}{1 - \rho_1^2}.
+$$
+
+Now, substituting$\rho_1$ and $\rho_2$ from the autocovariance
+calculations:
+
+$$
+\rho_1 = \frac{\alpha_1 (1 + \alpha_2)}{1 + \alpha_1^2 + \alpha_2^2}, \quad \rho_2 = \frac{\alpha_2}{1 + \alpha_1^2 + \alpha_2^2}.
+$$
+
+Thus:
+
+$$
+\phi_{22} = \frac{\frac{\alpha_2}{1 + \alpha_1^2 + \alpha_2^2} - \left( \frac{\alpha_1 (1 + \alpha_2)}{1 + \alpha_1^2 + \alpha_2^2} \right)^2}{1 - \left( \frac{\alpha_1 (1 + \alpha_2)}{1 + \alpha_1^2 + \alpha_2^2} \right)^2}.
+$$
+
+After substituting the expressions for $\rho_1$ and $\rho_2$, we obtain
+the final compact expression for $\phi_{22}$:
+
+$$
+\phi_{22} = \frac{\alpha_2 (1 + \alpha_1^2 + \alpha_2^2) - \alpha_1^2 (1 + \alpha_2)^2}{(1 + \alpha_1^2 + \alpha_2^2)^2 - \alpha_1^2 (1 + \alpha_2)^2}.
+$$
+
+**D.** The chosen values for $\alpha_1$ and $\alpha_2$ are 0.7 and 0.2,
+respectively. These values were selected for two main reasons: to
+represent a decay in the influence of past random shocks $S_t$ on $X_t$
+and to ensure the stability of the process.
+
+The higher value of $\alpha_1$ (0.7) compared to $\alpha_2$ (0.2)
+indicates that the most recent shock $S_{t-1}$ has a greater impact on
+the current state of the process than older shocks $S_{t-2}$. In other
+words, the most recent information is the most influential.
+
+Although the influence of past shocks decreases over time, it is still
+present. This is represented by the value of $\alpha_2$, which, although
+smaller than $\alpha_1$, is still different from zero.
+
+The stability of the process is guaranteed by the fact that the sum of
+the absolute values of $\alpha_1$ and $\alpha_2$ is less than 1:
+
+$$
+|\alpha_1| + |\alpha_2| = 0.7 + 0.2 = 0.9
+$$
+
+In summary, the chosen values for $\alpha_1$ and $\alpha_2$ allow for
+the creation of a realistic and stable model, where past shocks have a
+decreasing influence on the current state of the process.
+
+Then, by the invertibility's property, the coefficients must respect
+these conditions:
+
+$$ \begin{cases}     \alpha_2 + \alpha_1 < 1, \\    \alpha_2 - \alpha_1 < 1, \\    -1 < \alpha_2 < 1.\end{cases} $$
+
+**E.**
+
+```{r, echo=TRUE}
+# Define the parameters
+alpha1 <- 0.7  # Coefficient for S_(t-1)
+alpha2 <- 0.2  # Coefficient for S_(t-2)
+
+# Define the length T of the process
+T <- 100  # Set the length of the time series
+
+# Define the outcomes S_t (replace with actual data if available)
+set.seed(42)  # For reproducibility
+S <- sample(0:2, T, replace = TRUE)  # Random outcomes for S_t
+
+# Initialize X_t with zeros
+X <- numeric(T)  # Pre-allocate space for X_t
+X[1:2] <- S[1:2]  # Use the first two S values directly for X[1] and X[2]
+
+# Generate X_t based on the process
+for (t in 3:T) {
+  X[t] <- alpha1 * S[t-1] + alpha2 * S[t-2] + S[t]
+}
+
+# Plot the generated time series
+plot(X, type = "l", col = "purple", lwd = 2, xlab = "Time", ylab = expression(X[t]),
+     main = "Generated Time Series for X_t")
+grid()
+```
+
+**F.**
+
+```{r}
+# Compute sample statistics
+sample_mean <- mean(X)
+sample_variance <- var(X)
+sample_acf <- acf(X, plot = FALSE)$acf[1:4]  # lags: 0, 1, 2, 3
+```
+
+```{r}
+# Print results
+cat("Sample Mean:", round(sample_mean, 2), "\n")
+```
+
+```{r}
+cat("Sample Variance:", round(sample_variance, 2), "\n")
+```
+
+```{r}
+cat("Sample Autocorrelations:", round(sample_acf, 2), "\n")
+```
+
+The MA(2) process is defined as:
+
+$$
+X_t = \epsilon_t + \alpha_1 \epsilon_{t-1} + \alpha_2 \epsilon_{t-2}
+$$
+
+where: - $X_t$ is the value of the time series at time $t$, -
+$\epsilon_t$ is white noise with zero mean and variance
+$\sigma^2_\epsilon$, - $\alpha_1 = 0.7$ and $\alpha_2 = 0.2$ are the
+parameters of the process.
+
+Considering the results found previously, we can finally compute:
+
+**The mean of** $X_t$ given by:
+
+$$
+E[X_t] = \alpha_1 + \alpha_2 + 1
+$$
+
+Substituting $\alpha_1 = 0.7$ and $\alpha_2 = 0.2$:
+
+$$
+E[X_t] = 0.7 + 0.2 + 1 = 1.9
+$$
+
+Thus, the mean is $E[X_t] = 1.9$.
+
+The sample mean ($1.53$) is very close to the new mean of $1.9$,
+indicating that the time series is somewhat centered around the expected
+value.
+
+**The variance** of $X_t$ is:
+
+$$
+\text{Var}(X_t) = \text{Var}(\epsilon_t + \alpha_1 \epsilon_{t-1} + \alpha_2 \epsilon_{t-2})
+$$
+
+Since $\epsilon_t$, $\epsilon_{t-1}$, and $\epsilon_{t-2}$ are
+uncorrelated:
+
+$$
+\text{Var}(X_t) = \text{Var}(\epsilon_t) + \alpha_1^2 \text{Var}(\epsilon_{t-1}) + \alpha_2^2 \text{Var}(\epsilon_{t-2})
+$$
+
+Given that the variance of each $\epsilon_t$ is $\sigma^2$, we have:
+
+$$
+\text{Var}(X_t) = \sigma^2 + \alpha_1^2 \sigma^2 + \alpha_2^2 \sigma^2
+$$
+
+$$
+\text{Var}(X_t) = \sigma^2 (1 + \alpha_1^2 + \alpha_2^2)
+$$
+
+Substituting the values $\alpha_1 = 0.7$ and $\alpha_2 = 0.2$:
+
+$$
+\text{Var}(X_t) = \sigma^2 (1 + 0.7^2 + 0.2^2) = \sigma^2 (1 + 0.49 + 0.04) = \sigma^2 \cdot 1.53
+$$
+
+Thus, the theoretical variance is $\text{Var}(X_t) = 1.53 \sigma^2$.
+Considering that $\sigma^2$ is 1, the value will be $1.53$
+
+The sample variance ($0.93$) is relatively close to the theoretical
+variance of $1.53$, suggesting that the variability of the series
+matches the theoretical model.
+
+The **autocorrelations** process are:
+
+#### Lag $h = 1$:
+
+$$ \rho_1 = \frac{\alpha_1(1 + \alpha_2)}{1 + \alpha_1^2 + \alpha_2^2} \approx 0.54. $$
+
+***Lag ( h = 2 )**:*
+$$ \rho_2 = \frac{\alpha_2}{1 + \alpha_1^2 + \alpha_2^2} \approx 0.37. $$
+
+***Lag ( h = 3 ):*** $$ \rho_3 = 0. $$
+
+***For ( h \> 3 ):*** $$ \rho_h = 0. $$
+
+**Mean:** The sample mean of $1.53$ is close to the theoretical mean of
+$1.9$, indicating that the process is approximately centered around a
+stable mean. The difference is small and within the expected range of
+sampling variability.
+
+**Variance:** The sample variance of $0.93$ is slightly higher than the
+theoretical variance of $0.725$, suggesting a minor increase in
+variability. However, the variance remains reasonably consistent over
+time, as expected for a stationary process.
+
+**Autocorrelations:** - **Lag** $h = 1$: The sample autocorrelation of
+$0.49$ is slightly lower than the theoretical value of $0.54$,
+indicating a small underestimation of the dependence between consecutive
+observations. - **Lag** $h = 2$: The sample autocorrelation of $-0.09$
+deviates from the theoretical value of $0.37$. Although the difference
+is more noticeable, it remains within the acceptable range for sampling
+variation. - **Lag** $h = 3$: The sample autocorrelation of $-0.19$
+significantly deviates from the theoretical value of $0$. Such
+deviations are expected at higher lags due to reduced theoretical
+influence and greater sampling variability.
+
+**G.** Considering an $\alpha_1=1$, we will have different results and
+some properties will be not respected.
+
+In particular, as the conditions mentioned before on the point d, we
+will note that the property of the invertibility will be no ensured.
+
+$$ \begin{cases}     \alpha_2 + \alpha_1 < 1, \\    \alpha_2 - \alpha_1 < 1, \\    -1 < \alpha_2 < 1.\end{cases} $$
+
+Indeed, with the new value of $\alpha_1$, the process is no longer
+invertible.
